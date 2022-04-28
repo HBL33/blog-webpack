@@ -1,4 +1,5 @@
-import { async } from 'regenerator-runtime';
+
+import { openModal } from './assets/javascripts/modal';
 import './assets/styles/styles.scss';
 import './index.scss';
 
@@ -60,16 +61,19 @@ const createArticles = () => {
 
 	deleteButtons.forEach(button => {
 		button.addEventListener('click', async event => {
-			// console.log(event);
-			try {
-				const articleId = event.target.dataset.id;
-				const response = await fetch(`${url}/${articleId}`, {
-					method: 'DELETE',
-				});
-				await response.json();
-				fetchArticle();
-			} catch (e) {
-				console.log('e : ', e);
+			const result = await openModal("Etes vous sur de vouloir supprimer votre article?");
+			if (result === true) {
+
+					try {
+						const articleId = event.target.dataset.id;
+						const response = await fetch(`${url}/${articleId}`, {
+							method: 'DELETE',
+						});
+						await response.json();
+						fetchArticle();
+					} catch (e) {
+						console.log('e : ', e);
+					}
 			}
 		});
 	});
